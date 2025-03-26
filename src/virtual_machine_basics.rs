@@ -44,6 +44,11 @@ mod sentence_2_2_impl_rust{
 
 mod sentence_2_3_read_from_stdin{
 
+    fn read(input: &str) -> String {
+        // 標準入力からの読み込みを模擬するために、引数として受け取った文字列を返す
+        // 実際の標準入力からの読み込みはテスト環境では難しいため
+        format!("Line: {:?}", input.split_whitespace().collect::<Vec<&str>>())
+    }
     
     // なので、標準出力からの読み込みはテストしない
     // 代わりに、文字列を直接指定してテストする
