@@ -60,3 +60,23 @@ mod sentence_2_3_read_from_stdin{
         assert_eq!(line, "Line: [\"42\", \"36\", \"+\"]");
     }
 }
+
+mod sentence_2_4_parse_and_run_command{
+    #[test]
+    fn test_parse_and_run_command() {
+        let inputs=[
+            ("42 36 + 22 +",100)
+        ];
+
+        for (input, expected) in inputs.iter() {
+            let Ok(stack) = parse(input) else{
+                panic!("Failed to parse input: {}", input);
+            };
+            
+            let result = calc(&stack);
+            assert_eq!(result, *expected);
+        }
+
+        
+    }
+}
