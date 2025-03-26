@@ -32,9 +32,11 @@ fn test_stack_vm() {
 
     // スタックの値を加算する
     add(&mut stack);
-    assert_eq!(stack,vec![78])
+    assert_eq!(stack,vec![78]);
 
-    
+    push(&mut stack, 22);
+    add(&mut stack);
+    assert_eq!(stack, vec![100]);
 }
 
 
