@@ -42,3 +42,16 @@ mod sentence_2_2_impl_rust{
     }
 }
 
+mod sentence_2_3_read_from_stdin{
+
+    
+    // なので、標準出力からの読み込みはテストしない
+    // 代わりに、文字列を直接指定してテストする
+    #[test]
+    fn test_read_from_stdin() {
+        let input="42 36 +";
+
+        let line=read(input);
+        assert_eq!(line, "Line: [\"42\", \"36\", \"+\"]");
+    }
+}
