@@ -2,6 +2,19 @@
 //! 
 //! スタックベース仮想マシン
 
+fn push(stack: &mut Vec<i32>, value: i32) {
+    stack.push(value);
+}
+
+fn add(stack: &mut Vec<i32>) {
+    if stack.len() < 2 {
+        panic!("Stack underflow");
+    }
+    let lhs = stack.pop().unwrap();
+    let rhs = stack.pop().unwrap();
+    stack.push(lhs + rhs);
+}
+
 #[test]
 fn test_stack_vm() {
     let mut stack:Vec<i32> = vec![];
@@ -21,7 +34,7 @@ fn test_stack_vm() {
     add(&mut stack);
     assert_eq!(stack,vec![78])
 
-
+    
 }
 
 
