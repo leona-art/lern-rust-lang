@@ -62,10 +62,60 @@ mod sentence_2_3_read_from_stdin{
 }
 
 mod sentence_2_4_parse_and_run_command{
+    enum Operator{
+        Add,
+        Sub
+    }
+    enum Value{
+        Number(i32),
+        Operator(Operator),
+    }
+
+    fn parse(input: &str) -> Result<Vec<Value>, String> {
+
+        input.split_whitespace().map(|s| {
+            match s {
+                "+" => Ok(Value::Operator(Operator::Add)),
+                "-" => Ok(Value::Operator(Operator::Sub)),
+                _ => s.parse::<i32>().map(Value::Number).map_err(|_| format!("Invalid number: {}", s)),
+            }
+        }).collect()
+    }
+
+    fn add(stack: &mut Vec<i32>) {
+        if stack.len() < 2 {
+            panic!("Stack underflow");
+        }
+        let rhs = stack.pop().unwrap();
+        let lhs = stack.pop().unwrap();
+        stack.push(lhs + rhs);
+    }
+    fn sub(stack: &mut Vec<i32>) {
+        if stack.len() < 2 {
+            panic!("Stack underflow");
+        }
+        let rhs = stack.pop().unwrap();
+        let lhs = stack.pop().unwrap();
+        stack.push(lhs - rhs);
+    }
+
+    fn calc(stack: &[Value]) -> Vec<i32> {
+        let mut result = vec![];
+        for value in stack {
+            match value {
+                Value::Number(n) => result.push(*n), 
+                Value::Operator(Operator::Add) => add(&mut result), 
+                Value::Operator(Operator::Sub) => sub(&mut result), 
+            }
+        }
+        result
+    }
+
     #[test]
     fn test_parse_and_run_command() {
         let inputs=[
-            ("42 36 + 22 +",100)
+            ("42 36 + 22 +",vec![100]),
+            ("100 36 - 22 -",vec![42]),
         ];
 
         for (input, expected) in inputs.iter() {
