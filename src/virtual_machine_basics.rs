@@ -116,6 +116,10 @@ mod sentence_2_4_parse_and_run_command{
         let inputs=[
             ("42 36 + 22 +",vec![100]),
             ("100 36 - 22 -",vec![42]),
+            ("100 36 22 - + ",vec![114]),
+            ("100 36 22 - + 10 -",vec![104]),
+            ("100 36 22 - + 10 - 5 -",vec![99]),
+            ("100 36 22 - + 10 - 5 - 2 +",vec![101]),
         ];
 
         for (input, expected) in inputs.iter() {
