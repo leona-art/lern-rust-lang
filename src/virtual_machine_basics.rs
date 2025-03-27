@@ -140,3 +140,22 @@ mod sentence_2_4_parse_and_run_command{
         
     }
 }
+
+/// ブロックとネスト構造
+/// {}でトークンをグループ化する
+mod sentence_2_5_block_and_nest{
+    #[test]
+    fn test_block_and_nest() {
+        let inputs=[
+            ("1 2 + { 3 4 + } 5",vec![15])
+        ];
+        for (input, expected) in inputs.iter() {
+            let Ok(stack) = parse(input) else{
+                panic!("Failed to parse input: {}", input);
+            };
+            
+            let result = calc(&stack);
+            assert_eq!(result, *expected);
+        }
+    }
+}
