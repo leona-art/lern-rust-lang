@@ -3,6 +3,9 @@
 //! スタックベース仮想マシン
 
 
+/// Rustでの実装
+/// スタックベースの計算機のシンプルな実装を行う
+/// 逆ポーランド記法での計算機
 mod sentence_2_2_impl_rust{
     fn push(stack: &mut Vec<i32>, value: i32) {
         stack.push(value);
@@ -42,6 +45,9 @@ mod sentence_2_2_impl_rust{
     }
 }
 
+/// 標準入力からの読み込み
+/// 標準出力からの読み込みは、テスト環境では難しいため、
+/// 文字列を直接指定してテストする
 mod sentence_2_3_read_from_stdin{
 
     fn read(input: &str) -> String {
@@ -49,9 +55,7 @@ mod sentence_2_3_read_from_stdin{
         // 実際の標準入力からの読み込みはテスト環境では難しいため
         format!("Line: {:?}", input.split_whitespace().collect::<Vec<&str>>())
     }
-    
-    // なので、標準出力からの読み込みはテストしない
-    // 代わりに、文字列を直接指定してテストする
+
     #[test]
     fn test_read_from_stdin() {
         let input="42 36 +";
@@ -61,6 +65,8 @@ mod sentence_2_3_read_from_stdin{
     }
 }
 
+/// パースとコマンドの実行
+/// 数値とコマンドに分解して計算を行う
 mod sentence_2_4_parse_and_run_command{
     enum Operator{
         Add,
