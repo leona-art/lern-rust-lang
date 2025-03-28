@@ -145,6 +145,101 @@ mod sentence_2_4_parse_and_run_command{
 /// {}でトークンをグループ化する
 mod sentence_2_5_block_and_nest{
 
+    #[derive(Debug,PartialEq, Eq,Clone)]
+    enum Op{
+        Add,
+        Sub
+    }
+    #[derive(Debug,PartialEq, Eq,Clone)]
+    enum Value{
+        Number(i32),
+        Operator(Op),
+        Block(Vec<Value>),
+    }
+
+    impl Value {
+        fn display(&self) -> String {
+            match self {
+                Value::Number(n) => n.to_string(),
+                Value::Operator(Op::Add) => "+".to_string(),
+                Value::Operator(Op::Sub) => "-".to_string(),
+                Value::Block(block) => format!("{{ {} }}", block.iter().map(|v| v.display()).collect::<Vec<_>>().join(" ")),
+            }
+        }
+    }
+    
+    
+    fn display(stack: &[Value]) -> String {
+        stack.iter().map(|v| v.display()).collect::<Vec<_>>().join(" ")
+    }
+
+    fn parse_block<'a>(input: &'a [&str]) -> Result<(Vec<Value>, &'a str), String> {
+        let mut tokens = vec![];
+        let mut words=input;
+        while let Some((&word,mut rest))=words.split_first(){
+            if word.is_empty(){
+                break;
+            }
+            if word=="{"{
+                let block:Vec<Value>;
+                (block, rest) = parse_block(rest)?;
+                tokens.push(Value::Block(block));
+            }else if word=="}"{
+                return Ok((tokens, rest));
+            }else if let Ok(num)=word.parse::<i32>(){
+                tokens.push(Value::Number(num));
+            }else if word=="+"{
+                tokens.push(Value::Operator(Op::Add));
+            }else if word=="-"{
+                tokens.push(Value::Operator(Op::Sub));
+            }else{
+                return Err(format!("Invalid token: {}", word));
+            }
+            words=rest;
+        }
+        Ok((tokens, words))
+    }
+
+    fn add(stack: &mut Vec<Value>) {
+        if stack.len() < 2 {
+            panic!("Stack underflow");
+        }
+        let rhs = stack.pop().unwrap();
+        let lhs = stack.pop().unwrap();
+        if let (Value::Number(lhs_num), Value::Number(rhs_num)) = (lhs, rhs) {
+            stack.push(Value::Number(lhs_num + rhs_num));
+        } else {
+            panic!("Invalid operands for addition");
+        }
+    }
+    fn sub(stack: &mut Vec<Value>) {
+        if stack.len() < 2 {
+            panic!("Stack underflow");
+        }
+        let rhs = stack.pop().unwrap();
+        let lhs = stack.pop().unwrap();
+        if let (Value::Number(lhs_num), Value::Number(rhs_num)) = (lhs, rhs) {
+            stack.push(Value::Number(lhs_num - rhs_num));
+        } else {
+            panic!("Invalid operands for subtraction");
+        }
+    }
+
+    fn calc(stack: &[Value]) -> Vec<Value> {
+        let mut result = vec![];
+        for value in stack {
+            match value {
+                Value::Number(n) => result.push(Value::Number(*n)), 
+                Value::Operator(Op::Add) => add(&mut result), 
+                Value::Operator(Op::Sub) => sub(&mut result), 
+                Value::Block(block) => result.push(Value::Block(block.clone())), // ブロックはそのままスタックに追加
+                _ => {}
+            }
+        }
+        result
+    }
+
+    
 
     #[test]
     fn test_block_and_nest() {
@@ -152,10 +247,12 @@ mod sentence_2_5_block_and_nest{
             ("1 2 + { 3 4 + } 5","3 { 3 4 + } 5")
         ];
         for (input, expected) in inputs.iter() {
-            let Ok(stack) = parse_block(input) else{
+            let tokens: Vec<&str> = input.split(' ').collect();
+            let Ok((stack,_)) = parse_block(&tokens) else{
                 panic!("Failed to parse input: {}", input);
             };
-            assert_eq!(stack.display(), *expected);
+            let result = calc(&stack);
+            assert_eq!(display(&result), *expected);
         }
     }
 }
