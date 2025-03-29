@@ -173,7 +173,7 @@ mod sentence_2_5_block_and_nest{
         stack.iter().map(|v| v.display()).collect::<Vec<_>>().join(" ")
     }
 
-    fn parse_block<'a>(input: &'a [&str]) -> Result<(Vec<Value>, &'a str), String> {
+    fn parse_block<'a>(input: &'a[&'a str]) -> Result<(Vec<Value>, &'a [&'a str]), String> {
         let mut tokens = vec![];
         let mut words=input;
         while let Some((&word,mut rest))=words.split_first(){
@@ -247,9 +247,9 @@ mod sentence_2_5_block_and_nest{
             ("1 2 + { 3 4 + } 5","3 { 3 4 + } 5")
         ];
         for (input, expected) in inputs.iter() {
-            let tokens: Vec<&str> = input.split(' ').collect();
-            let Ok((stack,_)) = parse_block(&tokens) else{
-                panic!("Failed to parse input: {}", input);
+            let input: Vec<&str> = input.split_whitespace().collect();
+            let Ok((stack,_)) = parse_block(&input) else{
+                panic!("Failed to parse input: {:?}", input);
             };
             let result = calc(&stack);
             assert_eq!(display(&result), *expected);
