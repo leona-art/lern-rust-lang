@@ -247,7 +247,11 @@ mod sentence_2_5_block_and_nest{
     #[test]
     fn test_block_and_nest() {
         let inputs=[
-            ("1 2 + { 3 4 + } 5","3 { 3 4 + } 5")
+            ("1 2 + { 3 4 + } 5","3 { 3 4 + } 5"),
+            ("{ 1 2 + } { 3 4 + }","{ 1 2 + } { 3 4 + }"),
+            ("{ { 1 2 + } { 3 4 + } }","{ { 1 2 + } { 3 4 + } }"),
+            ("{ { { 1 2 + } { 3 4 + } } }","{ { { 1 2 + } { 3 4 + } } }"),
+            ("{ { { { 1 2 + } { 3 4 + } } } }","{ { { { 1 2 + } { 3 4 + } } } }"),
         ];
         for (input, expected) in inputs.iter() {
             let input = tokenize(input);
