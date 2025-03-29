@@ -225,7 +225,7 @@ mod sentence_2_5_block_and_nest{
         }
     }
     fn tokenize(input: &str) -> Vec<&str> {
-        todo!()
+        input.split_whitespace().collect()
     }
 
     fn calc(stack: &[Value]) -> Vec<Value> {
