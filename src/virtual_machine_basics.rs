@@ -224,6 +224,9 @@ mod sentence_2_5_block_and_nest{
             panic!("Invalid operands for subtraction");
         }
     }
+    fn tokenize(input: &str) -> Vec<&str> {
+        todo!()
+    }
 
     fn calc(stack: &[Value]) -> Vec<Value> {
         let mut result = vec![];
@@ -247,7 +250,7 @@ mod sentence_2_5_block_and_nest{
             ("1 2 + { 3 4 + } 5","3 { 3 4 + } 5")
         ];
         for (input, expected) in inputs.iter() {
-            let input: Vec<&str> = input.split_whitespace().collect();
+            let input = tokenize(input);
             let Ok((stack,_)) = parse_block(&input) else{
                 panic!("Failed to parse input: {:?}", input);
             };
