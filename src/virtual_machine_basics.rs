@@ -266,8 +266,20 @@ mod sentence_2_5_block_and_nest{
 /// 2.6 if制御構文
 /// { cond } { true_branch } { false_branch } if
 mod sentence_2_6_if{
-    fn parse(input:&str)->i32 {
-        todo!()
+    enum Value{
+        Number(i32),
+        Operator(Op),
+        Block(Vec<Value>),
+    }
+    enum Op{
+        Add,
+        Sub,
+        If,
+    }
+
+    /// 値の評価関数
+    fn eval<'src>(code:Value,stack:&mut Vec<Value>){
+        todo!();
     }
 
     #[test]
