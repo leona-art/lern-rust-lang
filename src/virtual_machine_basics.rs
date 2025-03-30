@@ -262,3 +262,23 @@ mod sentence_2_5_block_and_nest{
         }
     }
 }
+
+/// 2.6 if制御構文
+/// { cond } { true_branch } { false_branch } if
+mod sentence_2_6_if{
+    fn parse(input:&str)->i32 {
+        todo!()
+    }
+
+    #[test]
+    fn test_if() {
+        let inputs=[
+            ("{ 1 -1 + } { 100 } { -100 } if",-100),
+            ("{ 1 1 + } { 100 } { -100 } if",100),
+        ];
+        for (input, expected) in inputs.iter() {
+            let result = parse(input);
+            assert_eq!(result, *expected);
+        }
+    }
+}
