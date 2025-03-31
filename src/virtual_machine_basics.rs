@@ -471,17 +471,23 @@ mod sentence_2_6_if{
             }else if word=="if"{
                 tokens.push(Value::Operator(Op::If));
             }else{
+                // 無効なトークンの場合はエラーを返す
                 return Err(format!("Invalid token: {}", word));
             }
             words=rest;
         }
+        // パースされたトークンと残りの入力を返す
         Ok((tokens, words))
     }
 
+    /// ifテスト関数
+    /// 条件式とtrue/falseブランチの実行をテストする
     #[test]
     fn test_if() {
         let inputs=[
+            // 条件が0になる場合（1-1=0）、falseブランチが実行される
             ("{ 1 -1 + } { 100 } { -100 } if","-100"),
+            // 条件が非0になる場合（1+1=2）、trueブランチが実行される
             ("{ 1 1 + } { 100 } { -100 } if","100"),
         ];
         for (input, expected) in inputs.iter() {
