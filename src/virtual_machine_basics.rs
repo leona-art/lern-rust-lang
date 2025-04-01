@@ -514,6 +514,7 @@ mod sentence_2_7_define_variable{
         Number(i32),
         Operator(Op),
         Block(Vec<Value<'src>>),
+        /// 変数の値。`/`から始まるものを変数とする
         Symbol(&'src str),
     }
 
