@@ -498,3 +498,27 @@ mod sentence_2_6_if{
         }
     }
 }
+
+mod sentence_2_7_define_variable{
+    use std::collections::HashMap;
+    #[derive(Debug,PartialEq, Eq,Clone)]
+    enum Op{
+        Add,
+        Sub,
+        Mul,
+        Div,
+        If,
+    }
+    #[derive(Debug,PartialEq, Eq,Clone)]
+    enum Value<'src>{
+        Number(i32),
+        Operator(Op),
+        Block(Vec<Value<'src>>),
+        Symbol(&'src str),
+    }
+
+    struct vm<'src>{
+        stack: Vec<Value<'src>>,
+        variables: HashMap<&'src str, Value<'src>>,
+    }
+}
