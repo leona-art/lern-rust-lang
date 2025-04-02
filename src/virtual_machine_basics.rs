@@ -522,4 +522,14 @@ mod sentence_2_7_define_variable{
         stack: Vec<Value<'src>>,
         variables: HashMap<&'src str, Value<'src>>,
     }
+
+
+    fn parse<'a>(line:&'a str)->Vec<Value>{
+        todo!()
+    }
+
+    #[test]
+    fn test_parse(){
+        
+    }
 }
